@@ -19,6 +19,7 @@ end
 opts = OptionParser.new
 options = {:id => "167854", :str => "i"}
 opts.on("-i","--id=id"){|v| options[:id] = v}
+opts.on("--LArc"){|v| options[:id] = "334680"}
 opts.on("-s","--str=string"){|s| options[:str] = s}
 opts.parse(ARGV)
 puts shindan(options[:id],options[:str])
