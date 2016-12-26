@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+retried = false
+begin
+  require 'shindan'
+rescue LoadError
+  raise if retried
+  retried = true
+  $:.unshift "#{__dir__}/../lib"
+  retry
+end
+
+Shindan.new(ARGV).main
