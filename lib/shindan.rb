@@ -1,5 +1,4 @@
 require 'optparse'
-require 'nokogiri'
 require 'mechanize'
 
 class Shindan
@@ -22,13 +21,15 @@ class Shindan
     mechanize.user_agent_alias= "Mac Safari 4"
     url = "https://shindanmaker.com/#{id}"
 
+    result_text = ""
     mechanize.get(url) do |page|
-      mypage = page.form_with( name: "enter") do |form|
+      result_page = page.form_with( name: "enter") do |form|
         form.u = input
       end.submit
-      doc = Nokogiri::HTML(mypage.content.toutf8)
-      return doc.xpath('string(//div[@class="result2"])').strip
+      
+      result_text = result_page.at('div.result2').inner_text.strip
     end
+    result_text
   end
   def main
     options = parse_options()
