@@ -32,6 +32,7 @@ class Shindan
     end
     result_text
   end
+  
   def main
     options = parse_options()
     puts shindan(options[:id],options[:str])
