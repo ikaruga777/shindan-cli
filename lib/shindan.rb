@@ -2,6 +2,7 @@ require 'optparse'
 require 'mechanize'
 
 class Shindan
+  BASE_URL = "https://shindanmaker.com/"
   def initialize(argv)
     @argv = argv
   end
@@ -19,7 +20,7 @@ class Shindan
   def shindan (id,input)
     mechanize = Mechanize.new
     mechanize.user_agent_alias= "Mac Safari 4"
-    url = "https://shindanmaker.com/#{id}"
+    url = BASE_URL + id.to_s
 
     result_text = ""
     mechanize.get(url) do |page|
