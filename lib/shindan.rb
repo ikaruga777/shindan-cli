@@ -1,8 +1,8 @@
 require 'optparse'
-require 'nokogiri'
 require 'mechanize'
 
 class Shindan
+  BASE_URL = "https://shindanmaker.com/"
   def initialize(argv)
     @argv = argv
   end
@@ -18,18 +18,21 @@ class Shindan
   end
 
   def shindan (id,input)
-    mechanize = Mechanize.new
-    mechanize.user_agent_alias= "Mac Safari 4"
-    url = "https://shindanmaker.com/#{id}"
+    client = Mechanize.new
+    client.user_agent_alias= "Mac Safari 4"
+    url = BASE_URL + id.to_s
 
-    mechanize.get(url) do |page|
-      mypage = page.form_with( name: "enter") do |form|
+    result_text = ""
+    client.get(url) do |page|
+      result_page = page.form_with( name: "enter") do |form|
         form.u = input
       end.submit
-      doc = Nokogiri::HTML(mypage.content.toutf8)
-      return doc.xpath('string(//div[@class="result2"])').strip
+      
+      result_text = result_page.at('div.result2').inner_text.strip
     end
+    result_text
   end
+  
   def main
     options = parse_options()
     puts shindan(options[:id],options[:str])
