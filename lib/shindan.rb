@@ -23,12 +23,27 @@ class Shindan
     url = BASE_URL + id.to_s
 
     result_text = ""
-    client.get(url) do |page|
-      result_page = page.form_with( name: "enter") do |form|
-        form.u = input
-      end.submit
-      
-      result_text = result_page.at('div.result2').inner_text.strip
+    begin
+      client.get(url) do |page|      
+
+        result_page = page.form_with( name: "enter") do |form|
+          if !form
+            raise "診断ページが見つかりません。IDはあってますか?"
+          end
+          form.u = input
+        end.submit
+
+
+        result =  result_page.at('div.result2')
+        
+        if result
+          result_text = result.inner_text.strip
+        else
+          raise "診断ページが見つかりません。IDはあってますか?"
+        end
+      end
+    rescue => e
+      result_text = e
     end
     result_text
   end
