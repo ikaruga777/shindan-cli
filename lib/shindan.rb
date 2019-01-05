@@ -18,12 +18,12 @@ class Shindan
   end
 
   def shindan (id,input)
-    mechanize = Mechanize.new
-    mechanize.user_agent_alias= "Mac Safari 4"
+    client = Mechanize.new
+    client.user_agent_alias= "Mac Safari 4"
     url = BASE_URL + id.to_s
 
     result_text = ""
-    mechanize.get(url) do |page|
+    client.get(url) do |page|
       result_page = page.form_with( name: "enter") do |form|
         form.u = input
       end.submit
