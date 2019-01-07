@@ -1,3 +1,6 @@
 source 'https://rubygems.org'
-gem 'mechanize'
 
+ruby '2.6.0'
+
+gem 'mechanize'
+gem 'rubocop'
