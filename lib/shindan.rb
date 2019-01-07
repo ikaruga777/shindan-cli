@@ -18,6 +18,9 @@ class Shindan
   end
 
   def shindan (id,input)
+    raise "255文字以内で入力してください" if input.length > 255 
+    raise "数値を入れてください" if id !~ /\A[0-9]+\z/
+    
     client = Mechanize.new
     client.user_agent_alias= "Mac Safari 4"
     url = BASE_URL + id.to_s
