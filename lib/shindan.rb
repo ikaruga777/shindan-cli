@@ -24,28 +24,20 @@ class Shindan
     raise '数値を入れてください' if id !~ /\A[0-9]+\z/
 
     client = Mechanize.new
-
     url = BASE_URL + id.to_s
-
     result_text = ''
-    begin
-      client.get(url) do |page|
-        result_page = page.form_with(name: 'enter') do |form|
-          raise '診断ページが見つかりません。IDはあってますか?' unless form
 
-          form.u = input
-        end.submit
+    client.get(url) do |page|
+      result_page = page.form_with(name: 'enter') do |form|
+        raise '診断ページが見つかりません。IDはあってますか?' unless form
 
-        result = result_page.at('div.result2')
+        form.u = input
+      end.submit
 
-        if result
-          result_text = result.inner_text.strip
-        else
-          raise '診断ページが見つかりません。IDはあってますか?'
-        end
-      end
-    rescue StandardError => e
-      result_text = e
+      result = result_page.at('div.result2')
+      raise '診断ページが見つかりません。IDはあってますか?' if result
+
+      result_text = result.inner_text.strip
     end
     result_text
   end
@@ -53,5 +45,7 @@ class Shindan
   def main
     options = parse_options
     puts shindan(options[:id], options[:str])
+  rescue StandardError => e
+    puts e
   end
 end
