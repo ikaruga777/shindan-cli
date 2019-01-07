@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 retried = false
 begin
   require 'shindan'
 rescue LoadError
   raise if retried
+
   retried = true
-  $:.unshift "#{__dir__}/../lib"
+  $LOAD_PATH.unshift "#{__dir__}/../lib"
   retry
 end
 
